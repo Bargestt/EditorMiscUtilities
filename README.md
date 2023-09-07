@@ -3,7 +3,7 @@ Simple Editor utilities that are too smal for separate repository
 
 Features
 - Map picker combo box  
-- Thumbnail rederer using SlateBrush
+- Thumbnail renderer using SlateBrush
 - Hide unnecessary engine classes  
 
 ![image](https://github.com/Bargestt/EditorMiscUtilities/assets/13734283/c8a13d10-bc12-48a7-b178-da6eabc38d89)
