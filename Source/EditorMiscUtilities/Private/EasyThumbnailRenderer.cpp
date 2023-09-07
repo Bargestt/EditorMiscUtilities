@@ -185,6 +185,7 @@ void UEasyThumbnailRenderer::Draw(UObject* Object, int32 X, int32 Y, uint32 Widt
 			CanvasTile.Draw(Canvas);
 		}
 		break;
+		case ESlateBrushDrawType::RoundedBox:
 		case ESlateBrushDrawType::Box:
 		{
 			float NaturalWidth = Texture->GetSurfaceWidth();
@@ -309,7 +310,7 @@ void UEasyThumbnailRenderer::Draw(UObject* Object, int32 X, int32 Y, uint32 Widt
 			CanvasTile.BlendMode = SE_BLEND_Translucent;
 			CanvasTile.Draw(Canvas);
 		}
-		break;
+		break;		
 		default:
 
 			check(false);
