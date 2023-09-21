@@ -6,6 +6,8 @@
 #include "EditorMiscUtilitiesSettings.h"
 #include "MapPickerMenu.h"
 #include "EasyThumbnailRenderer.h"
+#include "ComponentTagCustomization.h"
+#include "CustomizationBinder.h"
 
 
 DEFINE_LOG_CATEGORY(LogEditorMiscUtilities);
@@ -22,11 +24,23 @@ public:
 	static const TArray<FSoftObjectPath>& GetCommonMaps()
 	{
 		return GetDefault<UEditorMiscUtilities>()->CommonEditorMaps;
-	}
+	}	
 
     virtual void StartupModule() override
     {
 		const UEditorMiscUtilities* Settings = GetDefault<UEditorMiscUtilities>();
+
+
+		FPropertyEditorModule& PropertyModule = FModuleManager::LoadModuleChecked<FPropertyEditorModule>("PropertyEditor");
+		{
+			if (Settings->bShowActorComponentTagPicker)
+			{
+				Binder.RegisterProperty(PropertyModule, "ArrayProperty", 
+					FOnGetPropertyTypeCustomizationInstance::CreateStatic(&FActorComponentTagsCustomization::MakeInstance), 
+					MakeShared<FActorComponentTagsCustomization::FPropertyTypeIdentifier>());
+			}
+		}
+		
 
 		CommonMaps = FMapPickerMenu::Create(TEXT("CommonMapOptions"), FMapPicker_GetMaps::CreateStatic(&FEditorMiscUtilitiesModule::GetCommonMaps));
 
@@ -80,9 +94,12 @@ public:
 		}	
 		RegisteredThumbnails.Empty();
 		CommonMaps.Reset();
+
+		Binder.UnregisterAll();
     }
 
 private:
+	FCustomizationBinder Binder;
 
 	TSharedPtr<FMapPickerMenu> CommonMaps;
 
